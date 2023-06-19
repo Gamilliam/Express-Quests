@@ -14,17 +14,27 @@ const welcome = (req, res) => {
 
 app.get("/", welcome);
 
+// ----------------------------------------------------------------
+// MOVIES
 const movieHandlers = require("./movieHandlers");
+
+const { validateMovie } = require("./validators.js");
+
+app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 app.post("/api/movies", movieHandlers.postMovie);
 
+
+// ----------------------------------------------------------------
+// USERS
 const userHandlers = require("./userHandlers");
 
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
 app.post("/api/users", userHandlers.postUser);
+
 
 
 app.listen(port, (err) => {
