@@ -1,5 +1,7 @@
 const database = require("./db");
 
+// -----------------------------------------------------------------------
+// GET (read)
 const getUsers = (req, res) => {
     database
         .query("select * from users")
@@ -29,21 +31,45 @@ const getUserById = (req, res) => {
         });
 };
 
+// -----------------------------------------------------------------------
+// POST (create)
 const postUser = (req, res) => {
-    const {firstname, lastname, email, city, language} = req.body;
+    const { firstname, lastname, email, city, language } = req.body;
     database
-    .query(`INSERT INTO users (firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)`
-        ,[firstname, lastname, email, city, language])
-    .then(([result]) => {
-        res.location(`/api/users/${result.insertId}`).sendStatus(201);
-    })
-    .catch((err) => {
-        res.status(500).send("Error inserting user into database");
-    });
+        .query(`INSERT INTO users (firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)`
+            , [firstname, lastname, email, city, language])
+        .then(([result]) => {
+            res.location(`/api/users/${result.insertId}`).sendStatus(201);
+        })
+        .catch((err) => {
+            res.status(500).send("Error inserting user into database");
+        });
 }
+
+// -----------------------------------------------------------------------
+// PUT (update)
+const putUser = (req, res) => {
+    const id = parseInt(req.params.id);
+    const { firstname, lastname, email, city, language } = req.body;
+    database
+        .query("UPDATE users SET firstname = ?, lastname = ?, email = ?, city = ?, language = ? WHERE id = ?", [firstname, lastname, email, city, language, id]
+        )
+        .then(([result]) => {
+            if (result.affectedRows === 0) {
+                res.status(404).send("Not Found");
+            } else {
+                res.sendStatus(204);
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error editing this user");
+        });
+};
 
 module.exports = {
     getUsers,
     getUserById,
-    postUser
+    postUser,
+    putUser
 };
