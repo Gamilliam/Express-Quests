@@ -55,15 +55,11 @@ const putUser = (req, res) => {
         .query("UPDATE users SET firstname = ?, lastname = ?, email = ?, city = ?, language = ? WHERE id = ?", [firstname, lastname, email, city, language, id]
         )
         .then(([result]) => {
-            if (result.affectedRows === 0) {
-                res.status(404).send("Not Found");
-            } else {
-                res.sendStatus(204);
-            }
+            res.location(`/api/users/${result.insertId}`).sendStatus(201);
         })
         .catch((err) => {
             console.error(err);
-            res.status(500).send("Error editing this user");
+            res.status(500).send("Error updating the user");
         });
 };
 
