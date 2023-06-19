@@ -20,20 +20,28 @@ const movieHandlers = require("./movieHandlers");
 
 const { validateMovie } = require("./validators.js");
 
-app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 
+// read
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
+// create
+app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 app.post("/api/movies", movieHandlers.postMovie);
+// update
+app.put("/api/movies/:id", movieHandlers.putMovie);
 
 
 // ----------------------------------------------------------------
 // USERS
 const userHandlers = require("./userHandlers");
 
+// read
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
+// create
 app.post("/api/users", userHandlers.postUser);
+//update
+app.put("/api/users/:id", userHandlers.putUser);
 
 
 

@@ -27,6 +27,8 @@ const movies = [
 
 const database = require("./db");
 
+// -----------------------------------------------------------------------
+// GET (read)
 const getMovies = (req, res) => {
   database
     .query("select * from movies")
@@ -56,6 +58,8 @@ const getMovieById = (req, res) => {
   });
 };
 
+// -----------------------------------------------------------------------
+// POST (create)
 const postMovie = (req, res) => {
   const { title, director, year, color, duration } = req.body;
 
@@ -73,8 +77,35 @@ const postMovie = (req, res) => {
     });
 };
 
+// -----------------------------------------------------------------------
+// PUT (update)
+const putMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+  const { title, director, year, color, duration } = req.body;
+
+  database
+    .query(
+      "UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? WHERE id = ?",
+      [title, director, year, color, duration, id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error editing the movie");
+    });
+};
+
+// -----------------------------------------------------------------------
+// EXPORT
 module.exports = {
   getMovies,
   getMovieById,
-  postMovie
+  postMovie,
+  putMovie
 };
