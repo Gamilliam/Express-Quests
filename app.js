@@ -29,7 +29,8 @@ app.post("/api/movies", movieHandlers.postMovie);
 // update
 app.put("/api/movies/:id", validateMovie, movieHandlers.putMovie);
 app.put("/api/movies/:id", movieHandlers.putMovie);
-
+// delete
+app.delete("/api/movies/:id", movieHandlers.deleteMovie);
 
 // ----------------------------------------------------------------
 // USERS
@@ -46,6 +47,8 @@ app.post("/api/users", userHandlers.postUser);
 //update
 app.put("/api/users/:id", validateUser, userHandlers.putUser);
 app.put("/api/users/:id", userHandlers.putUser);
+// delete
+app.delete("/api/users/:id", userHandlers.deleteUser);
 
 
 
