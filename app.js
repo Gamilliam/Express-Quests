@@ -43,9 +43,11 @@ app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
 // create
 app.post("/api/users", validateUser, userHandlers.postUser);
+app.post("/api/users", hashPassword, userHandlers.postUser);
 app.post("/api/users", userHandlers.postUser);
 //update
 app.put("/api/users/:id", validateUser, userHandlers.putUser);
+app.put("/api/users/:id", hashPassword, userHandlers.putUser);
 app.put("/api/users/:id", userHandlers.putUser);
 // delete
 app.delete("/api/users/:id", userHandlers.deleteUser);
